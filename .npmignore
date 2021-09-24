@@ -5,4 +5,4 @@ docs
 test
 .idea
 *.tar.gz
-.eslintrc*.yml
+.eslintrc*.json
