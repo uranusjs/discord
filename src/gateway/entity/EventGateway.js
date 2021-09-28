@@ -1,5 +1,3 @@
-const Utils = new (require('../../tools/Utils'))()
-
 
 class EventUnknownGateway {
 
@@ -7,9 +5,12 @@ class EventUnknownGateway {
 
 class EventGateway {
   constructor(data) {
+    this.eventName = 'eventGateway';
+    this.data = data;
   }
 
-  #identifyClass(data) {
+  // eslint-disable-next-line no-unused-vars
+  identifyClass(_data) {
 
   }
 }
@@ -17,4 +18,4 @@ class EventGateway {
 module.exports = {
   EventGateway,
   EventUnknownGateway
-}
+};
