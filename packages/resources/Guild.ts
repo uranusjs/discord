@@ -1,3 +1,5 @@
+import { ChannelRest } from '../rest/definitions/ChannelRest';
+import { RestOptions } from '../rest/definitions/RestOptions';
 import { Application } from './Application';
 import { ThreadStructure, TypeChannel } from './Channel';
 import { PresenceUpdateEventFields } from './Gateway';
@@ -229,7 +231,7 @@ export interface VoiceStateObject {
 }
 
 
-export interface Guild {
+export interface GuildStructure {
   id: string;
   name?: string;
   icon?: string;
@@ -281,3 +283,207 @@ export interface Guild {
   stickers?: Array<StickerStructure>;
 }
 
+
+export class Guild implements GuildStructure {
+  id: string;
+  name?: string | undefined;
+  icon?: string | undefined;
+  icon_hash?: string | undefined;
+  splash?: string | undefined;
+  discovery_splash?: string | undefined;
+  owner?: boolean | undefined;
+  owner_id?: string | undefined;
+  permissions?: string | undefined;
+  region?: string | undefined;
+  afk_channel_id?: string | undefined;
+  afk_timeout?: number | undefined;
+  widget_enabled?: boolean | undefined;
+  widget_channel_id?: string | undefined;
+  verification_level?: number | undefined;
+  default_message_notifications?: number | undefined;
+  explicit_content_filter?: number | undefined;
+  roles?: RoleStructure[] | undefined;
+  emojis?: EmojiStructure[] | undefined;
+  features?: string[][] | undefined;
+  mfa_level?: number | undefined;
+  application_id?: string | undefined;
+  system_channel_id?: string | undefined;
+  system_channel_flags?: number | undefined;
+  rules_channel_id?: string | undefined;
+  joined_at?: string | undefined;
+  large?: boolean | undefined;
+  unavailable?: boolean | undefined;
+  member_count?: number | undefined;
+  voice_states?: VoiceStateObject[] | undefined;
+  members?: GuildMemberStructure[] | undefined;
+  channels?: TypeChannel[] | undefined;
+  threads?: ThreadStructure[] | undefined;
+  presences?: PresenceUpdateEventFields[] | undefined;
+  max_presences?: number | undefined;
+  max_members?: number | undefined;
+  vanity_url_code?: string | undefined;
+  description?: string | undefined;
+  banner?: string | undefined;
+  premium_tier?: number | undefined;
+  preferred_locale?: string | undefined;
+  public_updates_channel_id?: string | undefined;
+  max_video_channel_users?: number | undefined;
+  approximate_member_count?: number | undefined;
+  approximate_presence_count?: number | undefined;
+  welcome_screen?: WelcomeScreenChannelStructure | undefined;
+  nsfw_level?: number | undefined;
+  stage_instancs?: StageInstanceStructure[] | undefined;
+  stickers?: StickerStructure[] | undefined;
+  rest: ChannelRest;
+  options_rest: RestOptions;
+  constructor(rest: ChannelRest, structure: GuildStructure, options_rest: RestOptions) 
+  {
+    this.id = structure.id;
+    this.rest = rest;
+    this.options_rest = options_rest;
+    if (structure.name !== undefined) {
+      this.name = structure.name;
+    }
+    if (structure.icon !== undefined) {
+      this.icon = structure.icon;
+    }
+    if (structure.icon_hash !== undefined) {
+      this.icon_hash = structure.icon_hash;
+    }
+    if (structure.splash !== undefined) {
+      this.splash = structure.splash;
+    }
+    if (structure.discovery_splash !== undefined) {
+      this.discovery_splash = structure.discovery_splash;
+    }
+    if (structure.owner !== undefined) {
+      this.owner = structure.owner;
+    }
+    if (structure.owner_id !== undefined) {
+      this.owner_id = structure.owner_id;
+    }
+    if (structure.permissions !== undefined) {
+      this.permissions = structure.permissions;
+    }
+    if (structure.region !== undefined) {
+      this.region = structure.region;
+    }
+    if (structure.afk_channel_id !== undefined) {
+      this.afk_channel_id = structure.afk_channel_id;
+    }
+    if (structure.afk_timeout !== undefined) {
+      this.afk_timeout = structure.afk_timeout;
+    }
+    if (structure.widget_channel_id !== undefined) {
+      this.widget_channel_id = structure.widget_channel_id;
+    }
+    if (structure.widget_enabled !== undefined) {
+      this.widget_enabled = structure.widget_enabled;
+    }
+    if (structure.verification_level !== undefined) {
+      this.verification_level = structure.verification_level;
+    }
+    if (structure.default_message_notifications !== undefined) {
+      this.default_message_notifications = structure.default_message_notifications;
+    }
+    if (structure.explicit_content_filter !== undefined) {
+      this.explicit_content_filter = structure.explicit_content_filter;
+    }
+    if (structure.roles !== undefined) {
+      this.roles = [];
+      for (const role of structure.roles) {
+        this.roles.push(role);
+      }
+    }
+    if (structure.emojis !== undefined) {
+      this.emojis = structure.emojis;
+    }
+    if (structure.features !== undefined) {
+      this.features = structure.features;
+    }
+    if (structure.mfa_level !== undefined) {
+      this.mfa_level = structure.mfa_level;
+    }
+    if (structure.application_id !== undefined) {
+      this.application_id = structure.application_id;
+    }
+    if (structure.system_channel_id !== undefined) {
+      this.system_channel_id = structure.system_channel_id;
+    }
+    if (structure.system_channel_flags !== undefined) {
+      this.system_channel_flags = structure.system_channel_flags;
+    }
+    if (structure.rules_channel_id !== undefined) {
+      this.rules_channel_id = structure.rules_channel_id;
+    }
+    if (structure.joined_at !== undefined) {
+      this.joined_at = structure.joined_at;
+    }
+    if (structure.large !== undefined) {
+      this.large = structure.large;
+    }
+    if (structure.unavailable !== undefined) {
+      this.unavailable = structure.unavailable;
+    }
+    if (structure.member_count !== undefined) {
+      this.member_count = structure.member_count;
+    }
+    if (structure.voice_states !== undefined) {
+      this.voice_states = structure.voice_states;
+    }
+    if (structure.members !== undefined) {
+      this.members = structure.members;
+    }
+    if (structure.channels !== undefined) {
+      this.channels = structure.channels;
+    }
+    if (structure.threads !== undefined) {
+      this.threads = structure.threads;
+    }
+    if (structure.presences !== undefined) {
+      this.presences = structure.presences;
+    }
+    if (structure.max_presences !== undefined) {
+      this.max_presences = structure.max_presences;
+    }
+    if (structure.max_members !== undefined) {
+      this.max_members = structure.max_members;
+    }
+    if (structure.vanity_url_code !== undefined) {
+      this.vanity_url_code = structure.vanity_url_code;
+    }
+    if (structure.description !== undefined) {
+      this.description = structure.description;
+    }
+    if (structure.banner !== undefined) {
+      this.banner = structure.banner;
+    }
+    if (structure.premium_tier !== undefined) {
+      this.premium_tier = structure.premium_tier;
+    }
+    if (structure.preferred_locale !== undefined) {
+      this.preferred_locale = structure.preferred_locale;
+    }
+    if (structure.public_updates_channel_id !== undefined) {
+      this.public_updates_channel_id = structure.public_updates_channel_id;
+    }
+    if (structure.max_video_channel_users !== undefined) {
+      this.max_video_channel_users = structure.max_video_channel_users;
+    }
+    if (structure.approximate_member_count !== undefined) {
+      this.approximate_member_count = structure.approximate_member_count;
+    }
+    if (structure.approximate_presence_count !== undefined) {
+      this.approximate_presence_count = structure.approximate_presence_count;
+    }
+    if (structure.welcome_screen !== undefined) {
+      this.welcome_screen = structure.welcome_screen;
+    }
+    if (structure.nsfw_level !== undefined) {
+      this.nsfw_level = structure.nsfw_level;
+    }
+    if (structure.stickers !== undefined) {
+      this.stickers = structure.stickers;
+    }
+  }
+}

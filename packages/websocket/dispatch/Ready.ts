@@ -1,4 +1,6 @@
-import { Guild } from '../../resources/Guild';
+import { Application } from '../../resources/Application';
+import { PresenceUpdateEventFields } from '../../resources/Gateway';
+import { GuildStructure } from '../../resources/Guild';
 import { User } from '../../resources/User';
 import { IdentifyFlagApplication } from '../gateway/GatewayApplicationIdentify';
 import { emit_event } from '../gateway/GatewayEngine';
@@ -11,26 +13,26 @@ export interface ReadyInterface {
   relationships?: Array<any> | any;
   private_channels?: Array<any> | any;
   presences?: Array<any> | any;
-  guilds?: Array<Guild> | any;
-  guilds_join_requests?: Array<Guild> | any;
+  guilds?: Array<GuildStructure> | any;
+  guilds_join_requests?: Array<GuildStructure> | any;
   geo_ordered_rtc_regions?: Array<string> | any;
   application?: any;
 }
 
 
 export class ReadyEvent implements ReadyInterface {
-  user?: any;
+  user?: User;
   session_id?: string | any;
   relationships?: any[] | any;
   private_channels?: any[] | any;
-  presences?: any[] | any;
-  guilds?: Guild[] | any;
-  guilds_join_requests?: Guild[] | any;
+  presences?: PresenceUpdateEventFields | any;
+  guilds?: GuildStructure[] | any;
+  guilds_join_requests?: GuildStructure[] | any;
   geo_ordered_rtc_regions?: string[] | any;
-  application?: any;
+  application?: Application;
 
 
-  constructor(ws: WebsocketNetwork, data: any) {
+  constructor(ws: WebsocketNetwork, data: ReadyEvent) {
 
     if (data.user !== undefined) {
       this.user = data.user
@@ -48,7 +50,8 @@ export class ReadyEvent implements ReadyInterface {
       this.presences = data.presences
     }
     if (data.guilds !== undefined) {
-      this.guilds = data.guilds
+      this.guilds = []
+      
     }
     if (data.guilds_join_requests !== undefined) {
       this.guilds_join_requests = data.guilds_join_requests
