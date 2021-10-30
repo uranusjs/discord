@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ES2021",
+    "module": "CommonJS",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -11,12 +11,15 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "lib": [
-      "es6"
-    ]
+    "declaration": true,
+    "outDir": "./dist/",
+    "rootDir": "./packages"
   },
-  "files": [
-    "./types/index.d.ts"
-  ]
+  "include": [
+    "packages"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
 }

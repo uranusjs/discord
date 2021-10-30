@@ -2,9 +2,11 @@
   "name": "@uranusjs/discord",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,8 @@
   "homepage": "https://github.com/uranusjs/discord#readme",
   "dependencies": {
     "axios": "^0.21.4",
-    "ws": "^8.2.2"
+    "node-fetch": "^3.0.0",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
     "@types/node": "^16.9.6",
