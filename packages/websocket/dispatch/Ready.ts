@@ -39,6 +39,7 @@ export class ReadyEvent implements ReadyInterface {
     }
     if (data.session_id !== undefined) {
       this.session_id = data.session_id
+      ws.session_id = data.session_id;
     }
     if (data.relationships !== undefined) {
       this.relationships = data.relationships

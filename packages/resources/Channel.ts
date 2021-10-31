@@ -1,6 +1,5 @@
 import { EventEmitter } from 'stream'
 import { ChannelRest } from '../rest/definitions/ChannelRest'
-import { RestOptions } from '../rest/definitions/RestOptions'
 
 export interface RecipientsInterface {
   username?: string;
@@ -59,7 +58,7 @@ export interface ChannelStructure extends ChannelRest {
 }
 
 
-export class TextChannel extends EventEmitter implements ChannelStructure {
+export class TextChannelData extends EventEmitter implements ChannelStructure {
   id: string
   type!: TypeChannel
   guild_id?: string | undefined
@@ -86,9 +85,8 @@ export class TextChannel extends EventEmitter implements ChannelStructure {
   member?: any
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
-  rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+
+  constructor(structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.guild_id !== undefined) {
@@ -121,8 +119,6 @@ export class TextChannel extends EventEmitter implements ChannelStructure {
     if (structure.default_auto_archive_duration !== undefined) {
       this.default_auto_archive_duration = structure.default_auto_archive_duration;
     }
-    this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -156,8 +152,7 @@ export class NewsChannel extends EventEmitter implements ChannelStructure {
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
   rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+  constructor(rest: ChannelRest, structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.guild_id !== undefined) {
@@ -191,7 +186,6 @@ export class NewsChannel extends EventEmitter implements ChannelStructure {
       this.default_auto_archive_duration = structure.default_auto_archive_duration;
     }
     this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -223,9 +217,7 @@ export class VoiceChannel extends EventEmitter implements ChannelStructure {
   member?: any
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
-  rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+  constructor(structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.guild_id !== undefined) {
@@ -255,8 +247,6 @@ export class VoiceChannel extends EventEmitter implements ChannelStructure {
     if (structure.rtc_region !== undefined) {
       this.rtc_region = structure.rtc_region;
     }
-    this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -289,8 +279,7 @@ export class DMChannel extends EventEmitter implements ChannelStructure {
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
   rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+  constructor(rest: ChannelRest, structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.last_message_id !== undefined) {
@@ -303,7 +292,6 @@ export class DMChannel extends EventEmitter implements ChannelStructure {
       this.recipients = structure.recipients;
     }
     this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -335,9 +323,8 @@ export class GroupChannel extends EventEmitter implements ChannelStructure {
   member?: any
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
-  rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+
+  constructor(structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.last_message_id !== undefined) {
@@ -355,8 +342,6 @@ export class GroupChannel extends EventEmitter implements ChannelStructure {
     if (structure.recipients !== undefined) {
       this.recipients = structure.recipients;
     }
-    this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -389,8 +374,7 @@ export class CategoryChannel extends EventEmitter implements ChannelStructure {
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
   rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+  constructor(rest: ChannelRest, structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.permission_overwrites !== undefined) {
@@ -415,7 +399,6 @@ export class CategoryChannel extends EventEmitter implements ChannelStructure {
       this.type = structure.type;
     }
     this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -446,9 +429,7 @@ export class StoreChannel extends EventEmitter implements ChannelStructure {
   member?: any
   default_auto_archive_duration?: number | undefined
   permissions?: string | undefined
-  rest: ChannelRest
-  options_rest: RestOptions
-  constructor(rest: ChannelRest, structure: ChannelStructure, options_rest: RestOptions) {
+  constructor(structure: ChannelStructure) {
     super();
     this.id = structure.id;
     if (structure.type !== undefined) {
@@ -475,8 +456,6 @@ export class StoreChannel extends EventEmitter implements ChannelStructure {
     if (structure.permission_overwrites !== undefined) {
       this.permission_overwrites = structure.permission_overwrites;
     }
-    this.rest = rest;
-    this.options_rest = options_rest;
   }
 }
 
@@ -492,9 +471,9 @@ export interface ThreadMetadata extends ChannelStructure {
   locked?: boolean;
 }
 
-export class ThreadChannel extends TextChannel {
-  constructor(rest: ChannelRest, structure: ThreadStructure, options_rest: RestOptions) {
-    super(rest, structure, options_rest);
+export class ThreadChannel extends TextChannelData {
+  constructor(structure: ThreadStructure) {
+    super(structure);
     this.id = structure.id;
     if (structure.guild_id !== undefined) {
       this.guild_id = structure.guild_id;

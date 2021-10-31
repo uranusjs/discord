@@ -10,7 +10,10 @@ export function payload_json(ws: WebsocketNetwork, data: any) {
   switch (json.op) {
     case Opcodes.Hello: {
       ws.heartbeat_interval = json.d.heartbeat_interval;
-      ws.heartbeat();
+      if ((ws.interval == null)) {
+        ws.heartbeat_send = Date.now()
+        ws.set_heartbeat();
+      }
       emit_event(ws, {
         tag_log: ['DEBUG', 'HELLO'],
         event: 'debug',
@@ -25,8 +28,16 @@ export function payload_json(ws: WebsocketNetwork, data: any) {
     };
     case Opcodes.Dispatch: {
       gateway_message(ws, json)
+      return
     }
-      break;
+    case Opcodes.HeartbeatAck: {
+      ws.heartbeat_received = Date.now()
+      ws.heartbeat_api = ws.heartbeat_received - ws.heartbeat_send
+      return
+    };
+    case Opcodes.Reconnect: {
+
+    }
   }
 
   emit_event(ws, {

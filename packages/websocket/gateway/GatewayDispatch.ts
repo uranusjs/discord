@@ -3,7 +3,16 @@ import { PayloadMessage, WebsocketNetwork } from '../Websocket';
 
 
 
+export function reconnect(_ws: WebsocketNetwork, code: number) {
+ // const discord_codes = [4000, 4001, 4003, 4004, 4005, 4007, 4008, 4009, 4010, 4011, 4012, 4013, 4014]
 
+
+  switch (code) {
+    case 4009: {
+
+    }
+  }
+}
 
 export function gateway_message(ws: WebsocketNetwork, message: PayloadMessage) {
   const d = message.d;
@@ -16,6 +25,7 @@ export function gateway_message(ws: WebsocketNetwork, message: PayloadMessage) {
       break;
   }
 }
+
 
 
 
