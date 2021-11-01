@@ -57,6 +57,16 @@ export const ENDPOINT_GUILD_DELETE = (snowflake: string, query_str?: string) => 
   }
 }
 
+export const ENDPOINT_GUILD_GET_CHANNELS = (snowflake: string, query_str?: string) => {
+  return {
+    details: {
+      method: 'GET',
+      endpoint_tag: `/guilds/:snowflake/channels`,
+      options: query_str == null ? query_str : null,
+      endpoint: `/guilds/${snowflake}/channels`
+    }
+  }
+}
 
 export const ENDPOINT_GUILD_GET_CHANNEL = (snowflake: string, snowflake_2: string, query_str?: string) => {
   return {

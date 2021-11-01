@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { replace, Tracking } from '..';
 import { APIDiscord } from './definitions/RestAction';
 
@@ -54,11 +54,13 @@ export class RestManager {
     this.tracking = tracking;
   }
   event(data: EventRest) {
+
     const event_data = {
       tag_log: ['REST'],
-      endpoint: replace(data.endpoint),
+      endpoint_one: replace(data.endpoint),
+      endpoint_two: data.endpoint,
       event: 'rest',
-      took: 0,
+      took: data.took,
       data: data
     }
     this.tracking.emit(event_data.event, { event_data })
@@ -75,17 +77,27 @@ export class RestManager {
         }
       }
     }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
@@ -136,17 +148,27 @@ export class RestManager {
         }
       }
     }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
@@ -197,76 +219,27 @@ export class RestManager {
         }
       }
     }
-    this.event({
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
       method: method,
-      endpoint: bodyRest.endpoint,
-      failed: false,
-    })
-    try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
-      let d = null;
-      let isEmpty = false;
-      try {
-        d = JSON.stringify(data_1.data);
-      } catch (err) {
-        isEmpty = true;
-      }
-      this.event({
-        method: method,
-        endpoint: bodyRest.endpoint,
-        failed: false,
-        took: Date.now() - time,
-        details: data_1
-      });
-      return new BodyRest({
-        json: d,
-        method: method,
-        data: bodyRest.data,
-        token: '[REDACTED]',
-        statuscode: data_1.status,
-        took: Date.now() - time,
-        endpoint: bodyRest.endpoint,
-        ratelimit: false,
-        data_empty: isEmpty,
-        bucket_id: ''
-      });
-    } catch (err_1) {
-      this.event({
-        method: method,
-        endpoint: bodyRest.endpoint,
-        failed: true,
-        took: Date.now() - time,
-      });
-      throw err_1;
+      headers: headers,
     }
-  }
 
-  async DELETE(bodyRest: BodyRestInterface, options?: OptionsRequest) {
-    const time = Date.now();
-    const method = 'DELETE'
-    let headers: HeadersRest = {}
     if (options !== undefined) {
-      if (options.is_require_token !== undefined) {
-        if (options.is_require_token) {
-          headers.Authorization = `Bot ${bodyRest.token}`
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
         }
       }
     }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
@@ -316,17 +289,27 @@ export class RestManager {
         }
       }
     }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
@@ -375,17 +358,27 @@ export class RestManager {
         }
       }
     }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
@@ -434,17 +427,27 @@ export class RestManager {
         }
       }
     }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
     this.event({
       method: method,
       endpoint: bodyRest.endpoint,
       failed: false,
     })
     try {
-      const data_1 = await axios({
-        baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
-        method: method,
-        headers: headers,
-      });
+      const data_1 = await axios(config);
       let d = null;
       let isEmpty = false;
       try {
