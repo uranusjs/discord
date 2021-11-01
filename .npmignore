@@ -3,6 +3,8 @@ package-lock.json
 examples
 docs
 test
+dist/
+.vscode/
 .idea
 *.tar.gz
 .eslintrc*.json
