@@ -12,6 +12,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
+    "jsx": "react-jsx",
+    "checkJs": true,
+    "watch": true,
     "outDir": "./dist/",
     "rootDir": "./packages"
   },
