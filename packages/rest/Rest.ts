@@ -484,4 +484,75 @@ export class RestManager {
       throw err_1;
     }
   }
+
+
+
+  async DELETE(bodyRest: BodyRestInterface, options?: OptionsRequest) {
+    const time = Date.now();
+    const method = 'DELETE'
+    let headers: HeadersRest = {}
+    if (options !== undefined) {
+      if (options.is_require_token !== undefined) {
+        if (options.is_require_token) {
+          headers.Authorization = `Bot ${bodyRest.token}`
+        }
+      }
+    }
+    const config: AxiosRequestConfig = {
+      baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
+      method: method,
+      headers: headers,
+    }
+
+    if (options !== undefined) {
+      if (options.is_require_data !== undefined) {
+        if (options.is_require_data) {
+          config.data = bodyRest.data
+        }
+      }
+    }
+
+    this.event({
+      method: method,
+      endpoint: bodyRest.endpoint,
+      failed: false,
+    })
+    try {
+      const data_1 = await axios(config);
+      let d = null;
+      let isEmpty = false;
+      try {
+        d = JSON.stringify(data_1.data);
+      } catch (err) {
+        isEmpty = true;
+      }
+      this.event({
+        method: method,
+        endpoint: bodyRest.endpoint,
+        failed: false,
+        took: Date.now() - time,
+        details: data_1
+      });
+      return new BodyRest({
+        json: d,
+        method: method,
+        data: bodyRest.data,
+        token: '[REDACTED]',
+        statuscode: data_1.status,
+        took: Date.now() - time,
+        endpoint: bodyRest.endpoint,
+        ratelimit: false,
+        data_empty: isEmpty,
+        bucket_id: ''
+      });
+    } catch (err_1) {
+      this.event({
+        method: method,
+        endpoint: bodyRest.endpoint,
+        failed: true,
+        took: Date.now() - time,
+      });
+      throw err_1;
+    }
+  }
 }
