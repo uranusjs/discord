@@ -1,4 +1,5 @@
 import { TypeChannel } from '../../../resources/Channel';
+import { RoleStructure } from '../../../resources/Guild';
 
 export interface ModifyGuild {
   name?: string;
@@ -19,6 +20,7 @@ export interface ModifyGuild {
   public_updates_channel_id?: string;
   preferred_locale?: string;
   features?: Array<string>;
+  reason?: string;
 }
 
 export interface OverwriteObject {
@@ -38,6 +40,16 @@ export interface CreateGuildChannel {
   permission_overwrites?: OverwriteObject;
   parent_id: string;
   nsfw: boolean;
+  reason?: string;
+}
+
+export interface ModifyGuildMember {
+  nick?: string;
+  roles?: Array<RoleStructure>;
+  mute?: boolean;
+  deaf?: boolean;
+  channel_id?: string;
+  reason?: string;
 }
 
 
@@ -46,4 +58,11 @@ export interface ModifyGuildChannelPositions {
   position: number;
   lock_permissions: boolean;
   parent_id: string;
+  reason?: string;
+}
+
+
+export interface ModifyCurrentMember {
+  nick?: string;
+  reason?: string;
 }

@@ -1,8 +1,8 @@
 import { ChannelStructure, ThreadChannel } from '../../resources/Channel';
-import {  GuildData, GuildMemberStructure, GuildPreviewStructure, GuildStructure } from '../../resources/Guild';
-import { ENDPOINT_GUILD, ENDPOINT_GUILD_GET_CHANNELS, ENDPOINT_GUILD_GET_MEMBER, ENDPOINT_GUILD_GET_MEMBER_LIST, ENDPOINT_GUILD_PREVIEW, ENDPOINT_GUILD_THREADS_ACTIVE, ENDPOINT_SEARCH_GUILD_MEMBERS } from '../endpoints/Guild';
+import {  GuildData, GuildMemberStructure, GuildPreviewStructure, GuildStructure, RoleStructure } from '../../resources/Guild';
+import { ENDPOINT_ADD_GUILD_MEMBER_ROLE, ENDPOINT_GUILD, ENDPOINT_GUILD_GET_CHANNELS, ENDPOINT_GUILD_GET_MEMBER, ENDPOINT_GUILD_GET_MEMBER_LIST, ENDPOINT_GUILD_MODIFY_CURRENT_USER, ENDPOINT_GUILD_MODIFY_CURRENT_USER_NICK, ENDPOINT_GUILD_PREVIEW, ENDPOINT_GUILD_THREADS_ACTIVE, ENDPOINT_SEARCH_GUILD_MEMBERS } from '../endpoints/Guild';
 import { RestManager } from '../Rest';
-import { CreateGuildChannel, ModifyGuild, ModifyGuildChannelPositions } from './params/GuildParams';
+import { CreateGuildChannel, ModifyCurrentMember, ModifyGuild, ModifyGuildChannelPositions, ModifyGuildMember } from './params/GuildParams';
 
 
 
@@ -131,6 +131,7 @@ export class GuildRest extends GuildData {
 
 
   searchGuildMembersRest(query_search: string, limit?: number) {
+    
     const querySearch = query_search == null ? `query=${query_search}` : ''
     const queryLimit = limit == null ? `limit=${limit}` : ''
     const query: string[] = []
@@ -149,6 +150,58 @@ export class GuildRest extends GuildData {
       query.shift();
 
       return rest.options.data as unknown as GuildMemberStructure[]
+    })
+  }
+
+
+  modifyGuildMemberRest(member: GuildMemberStructure, params: ModifyGuildMember) {
+    const endpoint = ENDPOINT_GUILD_GET_MEMBER(this.id, `${member.user?.id}`, '')
+    return this.#rest.PATCH({
+      endpoint: endpoint.details.endpoint,
+      data: params
+    }, { is_require_token: true, is_require_data: true }).then((rest) => {
+      return rest.options.data as unknown as GuildMemberStructure
+    })
+  }
+
+
+  modifyCurrentMemberRest(params: ModifyCurrentMember) {
+    const endpoint = ENDPOINT_GUILD_MODIFY_CURRENT_USER(this.id)
+    return this.#rest.PATCH({
+      endpoint: endpoint.details.endpoint,
+      data: params
+    }, { is_require_token: true, is_require_data: true }).then((rest) => {
+      return rest.options.data as unknown as GuildMemberStructure
+    })
+  }
+
+
+
+  modifyCurrentMemberNickRest(params: ModifyCurrentMember) {
+    const endpoint = ENDPOINT_GUILD_MODIFY_CURRENT_USER_NICK(this.id)
+    return this.#rest.PATCH({
+      endpoint: endpoint.details.endpoint,
+      data: params
+    }, { is_require_token: true, is_require_data: true }).then((rest) => {
+      return rest.options.data as unknown as GuildMemberStructure
+    })
+  }
+
+
+
+  addGuildMemberRoleRest(member: GuildMemberStructure, role: RoleStructure, reason?: '') {
+    let status = false;
+    if (reason !== undefined) {
+      status = true;
+    }
+    const endpoint = ENDPOINT_ADD_GUILD_MEMBER_ROLE(this.id, `${member.user?.id}`, role.id)
+    return this.#rest.PATCH({
+      endpoint: endpoint.details.endpoint,
+      data: {
+        reason: reason ?? ''
+      }
+    }, { is_require_token: true, is_require_data: status }).then((_rest) => {
+      return {}
     })
   }
 

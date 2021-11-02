@@ -184,6 +184,18 @@ export const ENDPOINT_GUILD_MODIFY_CURRENT_USER_NICK = (snowflake: string, query
 
 
 
+export const ENDPOINT_GUILD_MODIFY_CURRENT_USER = (snowflake: string, query_str?: string) => {
+  return {
+    details: {
+      method: 'PATCH',
+      endpoint_tag: `/guilds/:snowflake/members/@me`,
+      options: query_str == null ? query_str : null,
+      endpoint: `/guilds/${snowflake}/members/@me`
+    }
+  }
+}
+
+
 export const ENDPOINT_ADD_GUILD_MEMBER_ROLE = (snowflake: string, snowflake_2: string, snowflake_3: string, query_str?: string) => {
   return {
     details: {
