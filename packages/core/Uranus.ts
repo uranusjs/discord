@@ -11,6 +11,16 @@ export class UranusCore {
     this.options = options;
     this.guilds = new ManagerCache('guilds', options.cacheManager);
     this.gateway_states = new Map();
+    this.#resolve_options();
+  }
+
+  #resolve_options() {
+    if (this.options.cacheManager.addItems == undefined) {
+      this.options.cacheManager.addItems = false;
+    }
+    if (this.options.cacheManager.setLimitCache == undefined) {
+      this.options.cacheManager.setLimitCache = false;
+    }
   }
 
 

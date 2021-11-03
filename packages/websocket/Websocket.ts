@@ -48,7 +48,7 @@ export class WebsocketRestOptions extends GatewayRest {
 export class WebsocketNetwork extends WebsocketRestOptions {
   status: string;
   options: NetworkOptions;
-  token: string;
+  readonly #token: string;
   ws: WebSocket | null;
   uptime: number;
   heartbeat_interval: number;
@@ -69,7 +69,7 @@ export class WebsocketNetwork extends WebsocketRestOptions {
       throw Error('Tracking is required to activate this class.')
     }
     this.options = options;
-    this.token = options.token!!;
+    this.#token = options.token!!;
     this.ws = null;
     this.uptime = Date.now();
     this.#connect();
@@ -82,9 +82,21 @@ export class WebsocketNetwork extends WebsocketRestOptions {
     this.seq = 0;
     this.interval = null;
     this.status = 'NO_REPY';
+    process.once('SIGINT', () => {
+      console.log('close connection')
+      if (this.ws !== undefined) {
+       
+        this.ws?.close()
+        console.log(this.ws)
+
+
+      }
+      process.exit()
+    })
 
     this.on('set-connection-websocket', () => {
       if (!this.connected) {
+        this.status = 'CREATING_WS'
         this.#connect()
       }
     });
@@ -94,11 +106,12 @@ export class WebsocketNetwork extends WebsocketRestOptions {
 
   identify() {
     this.sendPayload(Opcodes.Identify, {
-      token: this.token,
-      intents: 513,
+      token: this.#token !== undefined ? this.#token : '',
+      intents: 32767,
+      shards: [this.options.shardStart !== undefined ? this.options.shardStart : 0, this.options.shardStart !== undefined ? this.options.shardStart : 1],
+      compress: true,
       properties: {
-        $browser: '',
-        $device: ''
+        $device: 'UranusJS (https://github.com/uranusjs/discord)'
       }
     })
     emit_event(this, {
@@ -130,6 +143,7 @@ export class WebsocketNetwork extends WebsocketRestOptions {
         reason: _reason
       }
     });
+    callback_connect(this);
   }
   set_heartbeat() {
     this.interval = setInterval(() => {

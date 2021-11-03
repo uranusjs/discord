@@ -2,6 +2,11 @@ import { RestAction } from '../rest/definitions/RestAction';
 import { Tracking } from '../Tracking';
 import { UranusCore } from './Uranus';
 
+export enum Compress {
+  NONE = 'NONE',
+  ZLIB = 'ZLIB'
+}
+
 export interface ConfigurationShardingOptions {
   getGateway: boolean;
   identifyFlags: boolean;
@@ -14,10 +19,14 @@ export interface ConfigurationShardingOptions {
   intent: number;
   restAction: RestAction;
   tracking: Tracking;
+  compress: Compress
+  decode: Compress;
+  encode: Compress;
 }
 
 
 export interface CacheOptions {
+  addItems: boolean;
   setLimitCache: boolean;
   limit: {
     guilds?: number;
