@@ -2,6 +2,7 @@ import { GatewayRest, payload_json, RestAction, Tracking } from '..';
 import { Opcodes, Utils } from './gateway/GatewayDefinitions';
 import { emit_event } from './gateway/GatewayEngine';
 import WebSocket = require('ws');
+import { callback_connect } from './gateway/CallbackGateway';
 
 export interface PayloadMessage {
   op: number,
@@ -45,6 +46,7 @@ export class WebsocketRestOptions extends GatewayRest {
 
 
 export class WebsocketNetwork extends WebsocketRestOptions {
+  status: string;
   options: NetworkOptions;
   token: string;
   ws: WebSocket | null;
@@ -56,7 +58,7 @@ export class WebsocketNetwork extends WebsocketRestOptions {
   interval?: NodeJS.Timer | null;
   seq: number;
   session_id: string | null;
-
+  connected: boolean;
 
   constructor(options: NetworkOptions) {
     super(options.restAction);
@@ -76,10 +78,16 @@ export class WebsocketNetwork extends WebsocketRestOptions {
     this.heartbeat_interval = 0;
     this.heartbeat_api = 0;
     this.session_id = null;
+    this.connected = false;
     this.seq = 0;
     this.interval = null;
+    this.status = 'NO_REPY';
 
-    options.tracking.on('set-connection-websocket', () => this.#connect());
+    this.on('set-connection-websocket', () => {
+      if (!this.connected) {
+        this.#connect()
+      }
+    });
   }
 
 
@@ -112,6 +120,7 @@ export class WebsocketNetwork extends WebsocketRestOptions {
   }
 
   close(_code: number, _reason: string) {
+    this.status = 'THE_CONNECTION_WAS_CLOSED';
     emit_event(this, {
       tag_log: ['DEBUG', `NETWORK_CLOSED=${_code}`],
       event: 'debug',
@@ -139,6 +148,7 @@ export class WebsocketNetwork extends WebsocketRestOptions {
     }, this.heartbeat_interval);
   }
   error(err: Error | string | any) {
+    this.status = 'ERROR';
     emit_event(this, {
       tag_log: ['DEBUG', `ERROR`],
       event: 'debug',
@@ -157,6 +167,8 @@ export class WebsocketNetwork extends WebsocketRestOptions {
         err: err
       }
     });
+    this.connected = false;
+    callback_connect(this);
   }
 
   sendPayload(_op: Opcodes, data: any) {
@@ -166,10 +178,12 @@ export class WebsocketNetwork extends WebsocketRestOptions {
   }
 
   #connect() {
+    this.status = 'CONNECTING'
+    this.connected = true
     this.ws = new WebSocket(`wss://gateway.discord.gg/?v=${Utils.Version}&encoding=json`);
+    this.ws.on('open', () => this.status = 'CONNECTED')
     this.ws.on('close', (code, reason) => this.close(code, reason))
     this.ws.on('error', (err) => this.error(err))
     this.ws.on('message', (data) => payload_json(this, data))
-    this.ws.on('ping', (data) => console.log(data))
   }
 }

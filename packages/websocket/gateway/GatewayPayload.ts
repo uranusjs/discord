@@ -9,6 +9,7 @@ export function payload_json(ws: WebsocketNetwork, data: any) {
   const json = JSON.parse(data) as unknown as PayloadMessage;
   switch (json.op) {
     case Opcodes.Hello: {
+      ws.status = 'HELLO'
       ws.heartbeat_interval = json.d.heartbeat_interval;
       if ((ws.interval == null)) {
         ws.heartbeat_send = Date.now()
@@ -23,6 +24,7 @@ export function payload_json(ws: WebsocketNetwork, data: any) {
           data: json.d
         }
       });
+      ws.status = 'IDENTIFYING'
       ws.identify()
       return
     };

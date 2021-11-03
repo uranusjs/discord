@@ -33,7 +33,7 @@ export class ReadyEvent implements ReadyInterface {
 
 
   constructor(ws: WebsocketNetwork, data: ReadyEvent) {
-
+    ws.status = 'SUCCESSFULLY_IDENTIFIED'
     if (data.user !== undefined) {
       this.user = data.user
     }
@@ -66,6 +66,7 @@ export class ReadyEvent implements ReadyInterface {
         new IdentifyFlagApplication(ws, data.application.flags)
       }
     }
+    ws.status = 'OK';
     emit_event(ws, {
       tag_log: ['DEBUG', `Ready`],
       event: 'debug',
