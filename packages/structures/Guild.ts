@@ -1,3 +1,3 @@
 import { GuildRest } from '../rest/definitions/GuildRest';
 
-export class Guild extends GuildRest { }
+export class DiscordGuild extends GuildRest { }

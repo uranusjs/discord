@@ -1,3 +1,4 @@
+import { UranusCore } from '../../core/Uranus';
 import { ChannelStructure, ThreadChannel } from '../../resources/Channel';
 import { BanStructure, GuildData, GuildMemberStructure, GuildPreviewStructure, GuildStructure, IntegrationStructure, RoleStructure, WelcomeScreenChannelStructure } from '../../resources/Guild';
 import { User } from '../../resources/User';
@@ -11,8 +12,11 @@ import { VanityResponse, VoiceRegionResponse } from './response/ResponseBody';
 
 export class GuildRest extends GuildData {
   #rest: RestManager
-  constructor(rest: RestManager, structure: GuildStructure) {
-    super(structure);
+  constructor(rest: RestManager, structure: GuildStructure, client: UranusCore) {
+    super(structure, client.options.cacheManager);
+    if (rest == undefined) {
+      throw 'This class needs RestGuild'
+    }
     this.#rest = rest;
   }
 

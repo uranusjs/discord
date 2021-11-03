@@ -1,4 +1,6 @@
 
+import { CacheOptions } from '../core/Configuration';
+import { ManagerCache } from '../manager/ManagerCache';
 import { Application } from './Application';
 import { ChannelStructure, ThreadStructure } from './Channel';
 import { PresenceUpdateEventFields } from './Gateway';
@@ -328,25 +330,25 @@ export interface GuildStructure {
 
 
 export class DefaultGuildManager {
-  roles?: Map<String, RoleStructure>;
-  emojis?: Map<String, EmojiStructure> | undefined;
-  stageInstances?: Map<String, StageInstanceStructure> | undefined;
-  stickers?: Map<String, StickerStructure> | undefined;
-  voiceStates?: Map<String, VoiceStateObject> | undefined;
-  members?: Map<String, GuildMemberStructure> | undefined;
-  channels?: Map<String, ChannelStructure> | undefined;
-  threads?: Map<String, ThreadStructure> | undefined;
-  presences?: Map<String, PresenceUpdateEventFields> | undefined;
+  roles?: ManagerCache<String, RoleStructure>;
+  emojis?: ManagerCache<String, EmojiStructure> | undefined;
+  stageInstances?: ManagerCache<String, StageInstanceStructure> | undefined;
+  stickers?: ManagerCache<String, StickerStructure> | undefined;
+  voiceStates?: ManagerCache<String, VoiceStateObject> | undefined;
+  members?: ManagerCache<String, GuildMemberStructure> | undefined;
+  channels?: ManagerCache<String, ChannelStructure> | undefined;
+  threads?: ManagerCache<String, ThreadStructure> | undefined;
+  presences?: ManagerCache<String, PresenceUpdateEventFields> | undefined;
 
-  constructor() {
-    this.members = new Map();
-    this.emojis = new Map();
-    this.stageInstances = new Map();
-    this.stickers = new Map();
-    this.voiceStates = new Map();
-    this.channels = new Map();
-    this.threads = new Map();
-    this.presences = new Map();
+  constructor(optionsCache: CacheOptions) {
+    this.members = new ManagerCache('members', optionsCache);
+    this.emojis = new ManagerCache('emojis', optionsCache);
+    this.stageInstances = new ManagerCache('stageInstances', optionsCache);
+    this.stickers = new ManagerCache('stickers', optionsCache);
+    this.voiceStates = new ManagerCache('voiceStates', optionsCache);
+    this.channels = new ManagerCache('channels', optionsCache);
+    this.threads = new ManagerCache('threads', optionsCache);
+    this.presences = new ManagerCache('presences', optionsCache);
   }
  }
 
@@ -392,8 +394,8 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
   welcomeScreen: WelcomeScreenChannelStructure | undefined;
   nsfwLevel: number | undefined;
   premiumProgressBarEnabled: boolean | undefined;
-  constructor(structure: GuildStructure) {
-    super();
+  constructor(structure: GuildStructure, optionsCache: CacheOptions) {
+    super(optionsCache);
     if (structure?.id !== undefined) {
       this.id = structure.id;
     } else {
@@ -419,7 +421,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.channels !== undefined) {
       for (const channel of structure.channels) {
-        this.channels?.set(channel.id, channel);
+        this.channels?.add(channel.id, channel);
       }
     }
     if (structure?.default_message_notifications !== undefined) {
@@ -433,7 +435,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.emojis !== undefined) {
       for (const emoji of structure.emojis) {
-        this.emojis?.set(emoji.id, emoji);
+        this.emojis?.add(emoji.id, emoji);
       }
     }
     if (structure?.explicit_content_filter !== undefined) {
@@ -468,7 +470,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.members !== undefined) {
       for (const member of structure.members) {
-        this.members?.set(member.user!!.id, member);
+        this.members?.add(member.user!!.id, member);
       }
     }
     if (structure?.mfa_level !== undefined) {
@@ -500,7 +502,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.presences !== undefined) {
       for (const presence of structure.presences) {
-        this.presences?.set(presence.user.id, presence);
+        this.presences?.add(presence.user.id, presence);
       }
     }
     if (structure?.public_updates_channel_id !== undefined) {
@@ -511,7 +513,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.roles !== undefined) {
       for (const role of structure.roles) {
-        this.roles?.set(role.id, role);
+        this.roles?.add(role.id, role);
       }
     }
     if (structure?.rules_channel_id !== undefined) {
@@ -522,12 +524,12 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.stage_instances !== undefined) {
       for (const stage of structure.stage_instances) {
-        this.stageInstances?.set(stage.id, stage);
+        this.stageInstances?.add(stage.id, stage);
       }
     }
     if (structure?.stickers !== undefined) {
       for (const sticker of structure.stickers) {
-        this.stickers?.set(sticker.id, sticker);
+        this.stickers?.add(sticker.id, sticker);
       }
     }
     if (structure?.system_channel_flags !== undefined) {
@@ -538,7 +540,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.threads !== undefined) {
       for (const thread of structure.threads) {
-        this.threads?.set(thread.id, thread);
+        this.threads?.add(thread.id, thread);
       }
     }
     if (structure?.unavailable !== undefined) {
@@ -552,7 +554,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.voice_states !== undefined) {
       for (const voiceState of structure?.voice_states) {
-        this.voiceStates?.set(voiceState.user_id, voiceState);
+        this.voiceStates?.add(voiceState.user_id, voiceState);
       }
     }
     if (structure?.welcome_screen !== undefined) {
@@ -587,7 +589,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.channels !== undefined) {
       for (const channel of structure.channels) {
-        this.channels?.set(channel.id, channel);
+        this.channels?.add(channel.id, channel);
       }
     }
     if (structure?.default_message_notifications !== undefined) {
@@ -601,7 +603,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.emojis !== undefined) {
       for (const emoji of structure.emojis) {
-        this.emojis?.set(emoji.id, emoji);
+        this.emojis?.add(emoji.id, emoji);
       }
     }
     if (structure?.explicit_content_filter !== undefined) {
@@ -636,7 +638,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.members !== undefined) {
       for (const member of structure.members) {
-        this.members?.set(member.user!!.id, member);
+        this.members?.add(member.user!!.id, member);
       }
     }
     if (structure?.mfa_level !== undefined) {
@@ -668,7 +670,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.presences !== undefined) {
       for (const presence of structure.presences) {
-        this.presences?.set(presence.user.id, presence);
+        this.presences?.add(presence.user.id, presence);
       }
     }
     if (structure?.public_updates_channel_id !== undefined) {
@@ -679,7 +681,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.roles !== undefined) {
       for (const role of structure.roles) {
-        this.roles?.set(role.id, role);
+        this.roles?.add(role.id, role);
       }
     }
     if (structure?.rules_channel_id !== undefined) {
@@ -690,12 +692,12 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.stage_instances !== undefined) {
       for (const stage of structure.stage_instances) {
-        this.stageInstances?.set(stage.id, stage);
+        this.stageInstances?.add(stage.id, stage);
       }
     }
     if (structure?.stickers !== undefined) {
       for (const sticker of structure.stickers) {
-        this.stickers?.set(sticker.id, sticker);
+        this.stickers?.add(sticker.id, sticker);
       }
     }
     if (structure?.system_channel_flags !== undefined) {
@@ -706,7 +708,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.threads !== undefined) {
       for (const thread of structure.threads) {
-        this.threads?.set(thread.id, thread);
+        this.threads?.add(thread.id, thread);
       }
     }
     if (structure?.unavailable !== undefined) {
@@ -720,7 +722,7 @@ export class GuildData extends DefaultGuildManager implements DefaultGuildStruct
     }
     if (structure?.voice_states !== undefined) {
       for (const voiceState of structure?.voice_states) {
-        this.voiceStates?.set(voiceState.user_id, voiceState);
+        this.voiceStates?.add(voiceState.user_id, voiceState);
       }
     }
     if (structure?.welcome_screen !== undefined) {
