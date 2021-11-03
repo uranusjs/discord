@@ -317,6 +317,20 @@ export const ENDPOINT_CREATE_GUILD_ROLE = (snowflake: string, query_str?: string
 
 
 
+export const ENDPOINT_GET_GUILD_ROLES = (snowflake: string, query_str?: string) => {
+  return {
+    details: {
+      method: 'POST',
+      endpoint_tag: `/guilds/:snowflake/roles`,
+      options: query_str == null ? query_str : null,
+      endpoint: `/guilds/${snowflake}/roles`
+    }
+  }
+}
+
+
+
+
 export const ENDPOINT_MODIFY_GUILD_ROLE_POSITIONS = (snowflake: string, query_str?: string) => {
   return {
     details: {
@@ -520,6 +534,33 @@ export const ENDPOINT_MODIFY_USER_VOICE_STATE = (snowflake: string, snowflake_2:
       endpoint_tag: `/guilds/:snowflake/voice_states/:snowflake`,
       options: query_str == null ? query_str : null,
       endpoint: `/guilds/${snowflake}/voice_states/${snowflake_2}`
+    }
+  }
+}
+
+
+
+
+export const ENDPOINT_GET_GUILD_WELCOME_SCREEN = (snowflake: string, query_str?: string) => {
+  return {
+    details: {
+      method: 'GET',
+      endpoint_tag: `/guilds/:snowflake/welcome-screen`,
+      options: query_str == null ? query_str : null,
+      endpoint: `/guilds/${snowflake}/welcome-screen`
+    }
+  }
+}
+
+
+
+export const ENDPOINT_MODIFY_GUILD_WELCOME_SCREEN = (snowflake: string, query_str?: string) => {
+  return {
+    details: {
+      method: 'PATCH',
+      endpoint_tag: `/guilds/:snowflake/welcome-screen`,
+      options: query_str == null ? query_str : null,
+      endpoint: `/guilds/${snowflake}/welcome-screen`
     }
   }
 }

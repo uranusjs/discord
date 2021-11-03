@@ -66,3 +66,55 @@ export interface ModifyCurrentMember {
   nick?: string;
   reason?: string;
 }
+
+
+export interface CreateGuildBan {
+  delete_message_days?: number;
+  reason?: string;
+}
+
+
+export interface CreateGuildRole {
+  name: string,
+  permissions: string,
+  color: number;
+  hoist: boolean;
+  icon?: any;
+  unicode_emoji: string;
+  mentionable: boolean;
+}
+
+
+export interface ModifyGuildRolePositions {
+  id: string;
+  position?: number;
+}
+
+
+export interface BeginGuildPrune {
+  days: number;
+  compute_prune_count: boolean;
+  include_roles: Array<string>;
+  reason?: string;
+}
+
+
+export interface GuildWidgetObject {
+  enabled: boolean;
+  channel_id: string;
+}
+
+export interface ModifyCurrentUserVoiceState {
+  channel_id: string;
+  suppress: boolean;
+  request_to_speak_timestamp: string;
+}
+
+
+
+export interface ModifyUserVoiceState {
+  channel_id: string;
+  suppress: boolean;
+  request_to_speak_timestamp: string;
+}
+

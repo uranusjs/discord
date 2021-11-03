@@ -20,6 +20,7 @@ export interface BodyRestInterface {
 export interface OptionsRequest {
   is_require_token?: boolean;
   is_require_data?: boolean;
+  reason?: string;
 }
 
 export class BodyRest {
@@ -32,6 +33,7 @@ export class BodyRest {
 
 export interface HeadersRest {
   Authorization?: string;
+  'X-Audit-Log-Reason'?: string;
 }
 
 export interface EventRest {
@@ -88,6 +90,9 @@ export class RestManager {
         if (options.is_require_data) {
           config.data = bodyRest.data
         }
+      }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
       }
     }
 
@@ -146,6 +151,9 @@ export class RestManager {
         if (options.is_require_token) {
           headers.Authorization = `Bot ${bodyRest.token}`
         }
+      }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
       }
     }
     const config: AxiosRequestConfig = {
@@ -231,6 +239,9 @@ export class RestManager {
           config.data = bodyRest.data
         }
       }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
+      }
     }
 
     this.event({
@@ -288,6 +299,9 @@ export class RestManager {
           headers.Authorization = `Bot ${bodyRest.token}`
         }
       }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
+      }
     }
     const config: AxiosRequestConfig = {
       baseURL: `https://discord.com/api/v${APIDiscord.VERSION}${bodyRest.endpoint}`,
@@ -300,6 +314,9 @@ export class RestManager {
         if (options.is_require_data) {
           config.data = bodyRest.data
         }
+      }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
       }
     }
 
@@ -370,6 +387,9 @@ export class RestManager {
           config.data = bodyRest.data
         }
       }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
+      }
     }
 
     this.event({
@@ -438,6 +458,9 @@ export class RestManager {
         if (options.is_require_data) {
           config.data = bodyRest.data
         }
+      }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
       }
     }
 
@@ -509,6 +532,9 @@ export class RestManager {
         if (options.is_require_data) {
           config.data = bodyRest.data
         }
+      }
+      if (options.reason !== undefined) {
+        headers['X-Audit-Log-Reason'] = options.reason;
       }
     }
 
